@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('balldontlie_players', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('balldontlie_player_origin_id');
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('position');
-            $table->string('height');
-            $table->string('weigth');
-            $table->string('jersey_number');
-            $table->string('college');
-            $table->string('country');
-            $table->integer('draft_year');
-            $table->integer('draft_round');
-            $table->integer('draft_number');
+            $table->unsignedBigInteger('balldontlie_player_origin_id')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('position')->nullable();
+            $table->string('height')->nullable();
+            $table->string('weigth')->nullable();
+            $table->string('jersey_number')->nullable();
+            $table->string('college')->nullable();
+            $table->string('country')->nullable();
+            $table->integer('draft_year')->nullable();
+            $table->integer('draft_round')->nullable();
+            $table->integer('draft_number')->nullable();
             $table->foreignId('balldontlies_team_id')->constrained('balldontlies_teams', 'balldontlie_team_id', 'balldontlies_teams_index');
             $table->timestamps();
         });

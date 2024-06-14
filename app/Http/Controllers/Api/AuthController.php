@@ -19,7 +19,7 @@ class AuthController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function login(Request $request) {
+    public function login(Request $request): JsonResponse {
         $email = $request->email;
 
         $user = $this->userRepository->getUserByEmail($email);
@@ -38,7 +38,7 @@ class AuthController extends Controller
         ], JsonResponse::HTTP_OK);
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request): JsonResponse {
         $request->user()->tokens()->delete();
 
         return response()->json(['Logout efetuado com sucesso'],JsonResponse::HTTP_OK);

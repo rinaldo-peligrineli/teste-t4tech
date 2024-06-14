@@ -21,7 +21,7 @@ class BalldontliePlayersController extends Controller
         $this->balldontliesPlayersRepositoryInterface = $balldontliesPlayersRepositoryInterface;
     }
 
-    public function index(Request $request) {
+    public function index(Request $request): JsonResponse {
 
         try {
             $perPage = $request->has('perPage') ? $request->per_page : 20;
@@ -39,7 +39,7 @@ class BalldontliePlayersController extends Controller
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request): JsonResponse {
         try {
             $team = new BalldontliesPlayersResource( $this->balldontliesPlayersRepositoryInterface->createPlayer($request->all()));
             return response()->json([
@@ -54,7 +54,7 @@ class BalldontliePlayersController extends Controller
         }
     }
 
-    public function search(Request $request) {
+    public function search(Request $request): JsonResponse {
         try {
             $column = '';
             $value = '';
@@ -82,7 +82,7 @@ class BalldontliePlayersController extends Controller
         }
     }
 
-    public function show($id) {
+    public function show($id): JsonResponse {
         try {
             $player = new BalldontliesPlayersResource($this->balldontliesPlayersRepositoryInterface->getPlayerById($id));
             return response()->json([
@@ -97,7 +97,7 @@ class BalldontliePlayersController extends Controller
         }
     }
 
-    public function delete($id) {
+    public function delete($id): JsonResponse {
         try {
             $this->balldontliesPlayersRepositoryInterface->deletePlayer($id);
 

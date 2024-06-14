@@ -8,21 +8,9 @@ use App\Models\User;
 class UserTest extends TestCase
 {
 
-    public function sign_in(): array
+    public function setUp(): void
     {
-
-        $userData = [
-            'email' => 'admin@t4tech-teste.com',
-            'password' => 'admin@1234'
-        ];
-
-        $response = $this->postJson('/api/auth', $userData);
-        $data = json_decode($response->getContent());
-
-
-        $headers = ['Authorization' => 'Bearer ' . $data->token];
-
-        return $headers;
+        parent::setUp();
 
     }
 
@@ -46,14 +34,19 @@ class UserTest extends TestCase
      {
 
          $userData = User::factory()->raw();
-
-         $header = $this->sign_in();
-         $header['X-Authorization'] = '9dc44621-e11a-437e-a685-ef3d6089ced9';
+         $header = $this->MakeAuthAdmin();
 
          $response = $this->postJson('/api/users', $userData, $header);
 
          $response
-            ->assertCreated();
+            ->assertCreated()
+            ->assertJsonStructure([
+                'id',
+                'name',
+                'email',
+                'email_verified_at',
+                'created_at',
+        ]);
 
      }
 
@@ -61,7 +54,9 @@ class UserTest extends TestCase
      public function testWithoutAuthorizationCannotStoreUser(): void
      {
          $userData = User::factory()->raw();
-         $response = $this->postJson('/api/users', $userData, $this->sign_in());
+         $header = $this->MakeAuthAdmin(false);
+
+         $response = $this->postJson('/api/users', $userData, $header);
 
          $response
             ->assertUnauthorized();
@@ -71,49 +66,43 @@ class UserTest extends TestCase
      public function testCanListUsers(): void
      {
 
-         $header = $this->sign_in();
-         $header['X-Authorization'] = '9dc44621-e11a-437e-a685-ef3d6089ced9';
+        $header = $this->MakeAuthAdmin();
+        $response = $this->getJson('/api/users', $header);
+        $data = json_decode($response->getContent());
 
-         $response = $this->getJson('/api/users', $header);
-         $data = json_decode($response->getContent());
-
-         $response->assertOk();
+        $response->assertOK();
 
      }
 
      public function testCanEditUser(): void
      {
-         $header = $this->sign_in();
-         $header['X-Authorization'] = '9dc44621-e11a-437e-a685-ef3d6089ced9';
+        $header = $this->MakeAuthAdmin();
+        $user = User::factory()->create();
 
-         $response = $this->getJson('/api/users/1', $header);
-         $data = json_decode($response->getContent());
+        $response = $this->getJson('/api/users/' . $user['id'], $header);
+        $data = json_decode($response->getContent());
 
-         $response->assertOk()
+        $response->assertOk()
             ->assertJsonCount(1);
 
      }
 
      public function testCanDeleteUser(): void
      {
-         $header = $this->sign_in();
-         $userData = User::factory()->raw();
+        $header = $this->MakeAuthAdmin();
+        $user = User::factory()->create();
 
+        $response = $this->deleteJson('/api/users/delete/' . $user['id'], [], $header);
 
-         $header['X-Authorization'] = '9dc44621-e11a-437e-a685-ef3d6089ced9';
-
-         $response = $this->deleteJson('/api/users/delete/4', [], $header);
-
-         $response->assertOk()->assertJsonCount(1);
+        $response->assertOk()->assertJsonCount(1);
 
      }
 
      public function testCannotDeleteUser(): void
      {
-         $header = $this->sign_in_role_user();
-         $header['X-Authorization'] = '9dc44621-e11a-437e-a685-ef3d6089ced9';
-
-         $response = $this->deleteJson('/api/users/delete/4', [], $header);
+        $header = $this->makeAuthUser();
+        $user = User::factory()->create();
+         $response = $this->deleteJson('/api/users/delete/' . $user['id'], [], $header);
          $data = json_decode($response->getContent());
 
          $response->assertStatus(403);

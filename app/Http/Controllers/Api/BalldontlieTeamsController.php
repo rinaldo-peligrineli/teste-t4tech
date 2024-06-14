@@ -21,7 +21,7 @@ class BalldontlieTeamsController extends Controller
         $this->balldontliesTeamsRepositoryInterface = $balldontliesTeamsRepositoryInterface;
     }
 
-    public function index() {
+    public function index(): JsonResponse {
         try {
             $teams = BalldontliesTeamsResource::collection($this->balldontliesTeamsRepositoryInterface->getAllTeams());
             return response()->json([
@@ -35,7 +35,7 @@ class BalldontlieTeamsController extends Controller
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request): JsonResponse {
         try {
             $team = new BalldontliesTeamsResource( $this->balldontliesTeamsRepositoryInterface->createTeam($request->all()));
             return response()->json([
@@ -50,7 +50,7 @@ class BalldontlieTeamsController extends Controller
         }
     }
 
-    public function search(Request $request) {
+    public function search(Request $request): JsonResponse {
         try {
             $column = '';
             $value = '';
@@ -78,7 +78,7 @@ class BalldontlieTeamsController extends Controller
         }
     }
 
-    public function show($id) {
+    public function show($id): JsonResponse {
         try {
             $team = new BalldontliesTeamsResource($this->balldontliesTeamsRepositoryInterface->getTeamById($id));
             return response()->json([
@@ -93,7 +93,7 @@ class BalldontlieTeamsController extends Controller
         }
     }
 
-    public function delete($id) {
+    public function delete($id): JsonResponse {
         try {
             $this->balldontliesTeamsRepositoryInterface->deleteTeam($id);
 

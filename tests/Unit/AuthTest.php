@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 class AuthTest extends TestCase
 {
 
-     public function test_it_can_be_login(): void
+     public function testCanBeMakeLogin(): void
      {
 
          $userData = [
@@ -19,12 +19,24 @@ class AuthTest extends TestCase
 
          $response = $this->postJson('/api/auth', $userData);
 
-         $response
-            ->assertStatus(200);
+         $response->assertOK();
+         $response->assertJsonStructure([
+            'message',
+            'user' => [
+                'id',
+                'name',
+                'email',
+                'email_verified_at',
+                'created_at',
+                'updated_at'
+
+            ],
+            'token'
+        ]);
 
      }
 
-     public function test_not_can_be_login(): void
+     public function testCannotMakelogin(): void
      {
 
          $userData = [
@@ -39,7 +51,7 @@ class AuthTest extends TestCase
 
      }
 
-     public function test_it_can_be_logout(): void
+     public function testCanMakeLogout(): void
      {
         $userData = [
             'email' => 'admin@t4tech-teste.com',

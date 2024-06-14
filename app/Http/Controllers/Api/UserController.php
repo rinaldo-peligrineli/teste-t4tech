@@ -18,7 +18,7 @@ class UserController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function index() {
+    public function index(): JsonResponse {
         try {
 
             $users = UserResource::collection($this->userRepository->getAllUsers());
@@ -33,7 +33,7 @@ class UserController extends Controller
         }
     }
 
-    public function show($id) {
+    public function show($id): JsonResponse {
         try {
             $users = new UserResource($this->userRepository->getUserById($id));
             return response()->json([
@@ -48,7 +48,7 @@ class UserController extends Controller
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request): JsonResponse {
         try {
 
             $arrUsers = $request->all();
@@ -66,7 +66,7 @@ class UserController extends Controller
         }
     }
 
-    public function search(Request $request) {
+    public function search(Request $request): JsonResponse {
         try {
             $column = '';
             $value = '';
@@ -94,7 +94,7 @@ class UserController extends Controller
     }
 
 
-    public function update($id, Request $request) {
+    public function update($id, Request $request): JsonResponse {
         try {
             $arrUsers = $request->all();
 
@@ -113,7 +113,7 @@ class UserController extends Controller
         }
     }
 
-    public function delete($id) {
+    public function delete($id): JsonResponse {
         try {
             $this->userRepository->deleteUser($id);
 
