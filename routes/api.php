@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\BalldontlieTeamsController;
+use App\Http\Controllers\Api\BalldontliePlayersController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,11 +33,15 @@ Route::group(['middleware' => ['auth:sanctum', 'personal.auth']], function () {
 
 
     Route::resource('balldontlies/teams', BalldontlieTeamsController::class, ['only' => ['index', 'show', 'store', 'update']]);
+    Route::resource('balldontlies/players', BalldontliePlayersController::class, ['only' => ['index', 'show', 'store', 'update']]);
+
     Route::get('balldontlies/team/search', [BalldontlieTeamsController::class, 'search']);
+    Route::get('balldontlies/player/search', [BalldontliePlayersController::class, 'search']);
 
     Route::group(['middleware' => ['role:admin']], function () {
         Route::delete('users/delete/{id}', [UserController::class, 'delete']);
         Route::delete('balldontlies/teams/delete/{id}', [BalldontlieTeamsController::class, 'delete']);
+        Route::delete('balldontlies/players/delete/{id}', [BalldontliePlayersController::class, 'delete']);
     });
 });
 

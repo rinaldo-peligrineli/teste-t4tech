@@ -26,4 +26,9 @@ class BalldontliePlayer extends Model
         'draft_number',
         'balldontlies_team_id'
     ];
+
+
+    public function balldontliesTeams() {
+        return $this->hasMany(BalldontliesTeams::class, 'balldontlies_team_id', 'balldontlie_team_id');
+    }
 }

@@ -11,15 +11,13 @@ use App\Http\Resources\BalldontliesTeamsResource;
 
 class BalldontlieTeamsController extends Controller
 {
-    private $balldontlieTeamsService;
+
     private BalldontliesTeamsRepositoryInterface $balldontliesTeamsRepositoryInterface;
 
     public function __construct(
-        BalldontlieService $balldontlieTeamsService,
         BalldontliesTeamsRepositoryInterface $balldontliesTeamsRepositoryInterface
 
     ) {
-        $this->balldontlieTeamsService = $balldontlieTeamsService;
         $this->balldontliesTeamsRepositoryInterface = $balldontliesTeamsRepositoryInterface;
     }
 

@@ -2,32 +2,34 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Services\BalldontlieService;
-use App\Interfaces\BalldontliesTeamsRepositoryInterface;
+use App\Interfaces\BalldontliesPlayersRepositoryInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Http\Resources\BalldontliesTeamsResource;
+use App\Http\Resources\BalldontliesPlayersResource;
 
 class BalldontliePlayersController extends Controller
 {
-    private $balldontlieTeamsService;
-    private BalldontliesTeamsRepositoryInterface $balldontliesTeamsRepositoryInterface;
+
+    private BalldontliesPlayersRepositoryInterface $balldontliesPlayersRepositoryInterface;
 
     public function __construct(
-        BalldontlieService $balldontlieTeamsService,
-        BalldontliesTeamsRepositoryInterface $balldontliesTeamsRepositoryInterface
+
+        BalldontliesPlayersRepositoryInterface $balldontliesPlayersRepositoryInterface
 
     ) {
-        $this->balldontlieTeamsService = $balldontlieTeamsService;
-        $this->balldontliesTeamsRepositoryInterface = $balldontliesTeamsRepositoryInterface;
+        $this->balldontliesPlayersRepositoryInterface = $balldontliesPlayersRepositoryInterface;
     }
 
-    public function index() {
+    public function index(Request $request) {
+
         try {
-            $teams = BalldontliesTeamsResource::collection($this->balldontliesTeamsRepositoryInterface->getAllTeams());
+            $perPage = $request->has('perPage') ? $request->per_page : 20;
+            $page = $request->has('page') ? $request->page : 1;
+
+            $players = BalldontliesPlayersResource::collection($this->balldontliesPlayersRepositoryInterface->getAllPlayersPaginate($perPage, $page));
             return response()->json([
-                'data' => $teams,
+                'data' => $players,
             ], JsonResponse::HTTP_OK);
 
         } catch(\Exception $e) {
@@ -39,7 +41,7 @@ class BalldontliePlayersController extends Controller
 
     public function store(Request $request) {
         try {
-            $team = new BalldontliesTeamsResource( $this->balldontliesTeamsRepositoryInterface->createTeam($request->all()));
+            $team = new BalldontliesPlayersResource( $this->balldontliesPlayersRepositoryInterface->createPlayer($request->all()));
             return response()->json([
                 'data' => $team,
             ], JsonResponse::HTTP_CREATED);
@@ -56,18 +58,18 @@ class BalldontliePlayersController extends Controller
         try {
             $column = '';
             $value = '';
-            if($request->has('name')) {
-                $column = 'name';
-                $value = $request->name;
+            if($request->has('first_name')) {
+                $column = 'first_name';
+                $value = $request->first_name;
             }
 
-            if($request->has('full_name')) {
-                $column = 'full_name';
-                $value = $request->full_name;
+            if($request->has('last_name')) {
+                $column = 'last_name';
+                $value = $request->last_name;
             }
 
 
-            $team = BalldontliesTeamsResource::collection($this->balldontliesTeamsRepositoryInterface->searchByColumn($column, $value));
+            $team = BalldontliesPlayersResource::collection($this->balldontliesPlayersRepositoryInterface->searchByColumn($column, $value));
             return response()->json([
                 'data' => $team,
             ], JsonResponse::HTTP_OK);
@@ -82,9 +84,9 @@ class BalldontliePlayersController extends Controller
 
     public function show($id) {
         try {
-            $team = new BalldontliesTeamsResource($this->balldontliesTeamsRepositoryInterface->getTeamById($id));
+            $player = new BalldontliesPlayersResource($this->balldontliesPlayersRepositoryInterface->getPlayerById($id));
             return response()->json([
-                'data' => $team,
+                'data' => $player,
             ], JsonResponse::HTTP_OK);
 
         } catch(\Exception $e) {
@@ -97,10 +99,10 @@ class BalldontliePlayersController extends Controller
 
     public function delete($id) {
         try {
-            $this->balldontliesTeamsRepositoryInterface->deleteTeam($id);
+            $this->balldontliesPlayersRepositoryInterface->deletePlayer($id);
 
             return response()->json([
-                'message' => 'Time excluido com sucesso'
+                'message' => 'Jogador excluido com sucesso'
             ], JsonResponse::HTTP_OK);
 
         } catch(\Exception $e) {

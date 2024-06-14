@@ -8,6 +8,6 @@ interface BalldontliesTeamsRepositoryInterface
     public function getTeamById($id);
     public function deleteTeam($id);
     public function searchByColumn($column, $value);
-    public function createTeam(array $userInfo);
+    public function createTeam(array $teamInfo);
     public function updateTeam($id, array $newInfo);
 }

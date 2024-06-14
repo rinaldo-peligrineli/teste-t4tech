@@ -13,6 +13,9 @@ use App\Repositories\BalldontliesTeamsRepository;
 use App\Interfaces\PersonalUserTokenRepositoryInterface;
 use App\Repositories\PersonalUserTokenRepository;
 
+use App\Interfaces\BalldontliesPlayersRepositoryInterface;
+use App\Repositories\BalldontliesPlayersRepository;
+
 class RepositoryServiceProvider extends ServiceProvider
 {
     /**
@@ -23,6 +26,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(BalldontliesTeamsRepositoryInterface::class, BalldontliesTeamsRepository::class);
         $this->app->bind(PersonalUserTokenRepositoryInterface::class, PersonalUserTokenRepository::class);
+        $this->app->bind(BalldontliesPlayersRepositoryInterface::class, BalldontliesPlayersRepository::class);
 
     }
 
