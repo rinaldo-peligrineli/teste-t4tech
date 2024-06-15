@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\v1\User;
 
-use App\Interfaces\UserRepositoryInterface;
+use App\Interfaces\User\UserRepositoryInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\User\UserResource;
+use App\Http\Requests\User\UserStoreRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 
 class UserController extends Controller
 {
-    private UserRepositoryInterface $userRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
+    public function __construct(
+        private readonly UserRepositoryInterface $userRepository
+    ) {}
 
     public function index(): JsonResponse {
         try {
@@ -29,6 +28,8 @@ class UserController extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'data' => [],
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -43,12 +44,13 @@ class UserController extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'data' => [],
-                'message' => $e->getMessage()
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function store(Request $request): JsonResponse {
+    public function store(UserStoreRequest $request): JsonResponse {
         try {
 
             $arrUsers = $request->all();
@@ -61,7 +63,8 @@ class UserController extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'data' => [],
-                'message' => $e->getMessage()
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -88,13 +91,14 @@ class UserController extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'data' => [],
-                'message' => $e->getMessage()
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
 
-    public function update($id, Request $request): JsonResponse {
+    public function update($id, UserUpdateRequest $request): JsonResponse {
         try {
             $arrUsers = $request->all();
 
@@ -108,7 +112,8 @@ class UserController extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'data' => [],
-                'message' => $e->getMessage()
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -124,7 +129,8 @@ class UserController extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'data' => [],
-                'message' => $e->getMessage()
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

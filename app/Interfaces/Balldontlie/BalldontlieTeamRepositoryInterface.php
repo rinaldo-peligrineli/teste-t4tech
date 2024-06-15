@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Interfaces;
+namespace App\Interfaces\Balldontlie;
 
-interface BalldontliesTeamsRepositoryInterface
+interface BalldontlieTeamRepositoryInterface
 {
     public function getAllTeams();
     public function getTeamById($id);

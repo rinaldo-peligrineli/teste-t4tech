@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Interfaces;
+namespace App\Interfaces\Balldontlie;
 
-interface BalldontliesPlayersRepositoryInterface
+interface BalldontliePlayerRepositoryInterface
 {
     public function getAllPlayers();
     public function getAllPlayersPaginate($perPage, $page);

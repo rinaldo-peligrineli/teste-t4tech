@@ -4,17 +4,17 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-use App\Interfaces\UserRepositoryInterface;
-use App\Repositories\UserRepository;
+use App\Interfaces\User\UserRepositoryInterface;
+use App\Repositories\User\UserRepository;
 
-use App\Interfaces\BalldontliesTeamsRepositoryInterface;
-use App\Repositories\BalldontliesTeamsRepository;
+use App\Interfaces\Balldontlie\BalldontlieTeamRepositoryInterface;
+use App\Repositories\Balldontlie\BalldontlieTeamRepository;
 
 use App\Interfaces\PersonalUserTokenRepositoryInterface;
 use App\Repositories\PersonalUserTokenRepository;
 
-use App\Interfaces\BalldontliesPlayersRepositoryInterface;
-use App\Repositories\BalldontliesPlayersRepository;
+use App\Interfaces\Balldontlie\BalldontliePlayerRepositoryInterface;
+use App\Repositories\Balldontlie\BalldontliePlayerRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -24,9 +24,9 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-        $this->app->bind(BalldontliesTeamsRepositoryInterface::class, BalldontliesTeamsRepository::class);
+        $this->app->bind(BalldontlieTeamRepositoryInterface::class, BalldontlieTeamRepository::class);
         $this->app->bind(PersonalUserTokenRepositoryInterface::class, PersonalUserTokenRepository::class);
-        $this->app->bind(BalldontliesPlayersRepositoryInterface::class, BalldontliesPlayersRepository::class);
+        $this->app->bind(BalldontliePlayerRepositoryInterface::class, BalldontliePlayerRepository::class);
 
     }
 

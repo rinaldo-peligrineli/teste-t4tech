@@ -1,25 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\v1\Balldontlie;
 
-use App\Interfaces\BalldontliesPlayersRepositoryInterface;
+use App\Interfaces\Balldontlie\BalldontliePlayerRepositoryInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Http\Resources\BalldontliesPlayersResource;
+use App\Http\Resources\Balldontlie\BalldontliePlayerResource;
+use App\Http\Requests\Balldontlie\BalldontliePlayerStoreRequest;
+use App\Http\Requests\Balldontlie\BalldontliePlayerUpdateRequest;
 
 class BalldontliePlayersController extends Controller
 {
 
-    private BalldontliesPlayersRepositoryInterface $balldontliesPlayersRepositoryInterface;
-
     public function __construct(
-
-        BalldontliesPlayersRepositoryInterface $balldontliesPlayersRepositoryInterface
-
-    ) {
-        $this->balldontliesPlayersRepositoryInterface = $balldontliesPlayersRepositoryInterface;
-    }
+        private readonly BalldontliePlayerRepositoryInterface $balldontliePlayerRepositoryInterface
+    ) {}
 
     public function index(Request $request): JsonResponse {
 
@@ -27,7 +23,7 @@ class BalldontliePlayersController extends Controller
             $perPage = $request->has('perPage') ? $request->per_page : 20;
             $page = $request->has('page') ? $request->page : 1;
 
-            $players = BalldontliesPlayersResource::collection($this->balldontliesPlayersRepositoryInterface->getAllPlayersPaginate($perPage, $page));
+            $players = BalldontliePlayerResource::collection($this->balldontliePlayerRepositoryInterface->getAllPlayersPaginate($perPage, $page));
             return response()->json([
                 'data' => $players,
             ], JsonResponse::HTTP_OK);
@@ -35,13 +31,15 @@ class BalldontliePlayersController extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'data' => [],
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function store(Request $request): JsonResponse {
+    public function store(BalldontliePlayerStoreRequest $request): JsonResponse {
         try {
-            $team = new BalldontliesPlayersResource( $this->balldontliesPlayersRepositoryInterface->createPlayer($request->all()));
+            $team = new BalldontliePlayerResource( $this->balldontliePlayerRepositoryInterface->createPlayer($request->all()));
             return response()->json([
                 'data' => $team,
             ], JsonResponse::HTTP_CREATED);
@@ -49,7 +47,8 @@ class BalldontliePlayersController extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'data' => [],
-                'message' => $e->getMessage()
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -68,8 +67,7 @@ class BalldontliePlayersController extends Controller
                 $value = $request->last_name;
             }
 
-
-            $team = BalldontliesPlayersResource::collection($this->balldontliesPlayersRepositoryInterface->searchByColumn($column, $value));
+            $team = BalldontliePlayerResource::collection($this->balldontliePlayerRepositoryInterface->searchByColumn($column, $value));
             return response()->json([
                 'data' => $team,
             ], JsonResponse::HTTP_OK);
@@ -77,14 +75,15 @@ class BalldontliePlayersController extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'data' => [],
-                'message' => $e->getMessage()
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function show($id): JsonResponse {
         try {
-            $player = new BalldontliesPlayersResource($this->balldontliesPlayersRepositoryInterface->getPlayerById($id));
+            $player = new BalldontliePlayerResource($this->balldontliePlayerRepositoryInterface->getPlayerById($id));
             return response()->json([
                 'data' => $player,
             ], JsonResponse::HTTP_OK);
@@ -92,14 +91,31 @@ class BalldontliePlayersController extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'data' => [],
-                'message' => $e->getMessage()
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function update($id, BalldontliePlayerUpdateRequest $request): JsonResponse {
+        try {
+            $player = new BalldontliePlayerResource($this->balldontliePlayerRepositoryInterface->getPlayerById($id));
+            return response()->json([
+                'message' => "Team {$id} atualizado com sucesso",
+            ], JsonResponse::HTTP_OK);
+
+        } catch(\Exception $e) {
+            return response()->json([
+                'data' => [],
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function delete($id): JsonResponse {
         try {
-            $this->balldontliesPlayersRepositoryInterface->deletePlayer($id);
+            $this->balldontliePlayerRepositoryInterface->deletePlayer($id);
 
             return response()->json([
                 'message' => 'Jogador excluido com sucesso'
@@ -108,7 +124,8 @@ class BalldontliePlayersController extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'data' => [],
-                'message' => $e->getMessage()
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

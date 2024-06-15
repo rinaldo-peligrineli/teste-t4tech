@@ -2,10 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\BalldontlieTeamsController;
-use App\Http\Controllers\Api\BalldontliePlayersController;
+use App\Http\Controllers\Api\v1\Auth\AuthController;
+use App\Http\Controllers\Api\v1\User\UserController;
+use App\Http\Controllers\Api\v1\Balldontlie\BalldontlieTeamsController;
+use App\Http\Controllers\Api\v1\Balldontlie\BalldontliePlayersController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,10 +16,6 @@ use App\Http\Controllers\Api\BalldontliePlayersController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
 
 Route::post('/auth', [AuthController::class, 'login']);
 
@@ -44,9 +40,3 @@ Route::group(['middleware' => ['auth:sanctum', 'personal.auth']], function () {
         Route::delete('balldontlies/players/delete/{id}', [BalldontliePlayersController::class, 'delete']);
     });
 });
-
-
-
-
-
-

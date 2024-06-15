@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Balldontlie;
 
-use App\Interfaces\BalldontliesPlayersRepositoryInterface;
+use App\Interfaces\Balldontlie\BalldontliePlayerRepositoryInterface;
 use App\Models\BalldontliePlayer;
 
-class BalldontliesPlayersRepository implements BalldontliesPlayersRepositoryInterface
+class BalldontliePlayerRepository implements BalldontliePlayerRepositoryInterface
 {
     public function getAllPlayers()
     {

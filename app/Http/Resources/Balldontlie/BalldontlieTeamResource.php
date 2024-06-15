@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Balldontlie;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BalldontliesTeamsResource extends JsonResource
+class BalldontlieTeamResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

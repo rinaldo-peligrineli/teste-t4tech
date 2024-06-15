@@ -1,29 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\v1\Balldontlie;
 
-use App\Services\BalldontlieService;
-use App\Interfaces\BalldontliesTeamsRepositoryInterface;
+use App\Interfaces\Balldontlie\BalldontlieTeamRepositoryInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Http\Resources\BalldontliesTeamsResource;
+use App\Http\Resources\Balldontlie\BalldontlieTeamResource;
+use App\Http\Requests\Balldontlie\BalldontlieTeamStoreRequest;
+use App\Http\Requests\Balldontlie\BalldontlieTeamUpdateRequest;
 
 class BalldontlieTeamsController extends Controller
 {
 
-    private BalldontliesTeamsRepositoryInterface $balldontliesTeamsRepositoryInterface;
-
     public function __construct(
-        BalldontliesTeamsRepositoryInterface $balldontliesTeamsRepositoryInterface
-
-    ) {
-        $this->balldontliesTeamsRepositoryInterface = $balldontliesTeamsRepositoryInterface;
-    }
+        private readonly BalldontlieTeamRepositoryInterface $balldontlieTeamRepositoryInterface
+    ) {}
 
     public function index(): JsonResponse {
         try {
-            $teams = BalldontliesTeamsResource::collection($this->balldontliesTeamsRepositoryInterface->getAllTeams());
+            $teams = BalldontlieTeamResource::collection($this->balldontlieTeamRepositoryInterface->getAllTeams());
             return response()->json([
                 'data' => $teams,
             ], JsonResponse::HTTP_OK);
@@ -31,13 +27,15 @@ class BalldontlieTeamsController extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'data' => [],
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function store(Request $request): JsonResponse {
+    public function store(BalldontlieTeamStoreRequest $request): JsonResponse {
         try {
-            $team = new BalldontliesTeamsResource( $this->balldontliesTeamsRepositoryInterface->createTeam($request->all()));
+            $team = new BalldontlieTeamResource( $this->balldontlieTeamRepositoryInterface->createTeam($request->all()));
             return response()->json([
                 'data' => $team,
             ], JsonResponse::HTTP_CREATED);
@@ -45,7 +43,24 @@ class BalldontlieTeamsController extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'data' => [],
-                'message' => $e->getMessage()
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function update($id, BalldontlieTeamUpdateRequest $request): JsonResponse {
+        try {
+            $team = new BalldontlieTeamResource( $this->balldontlieTeamRepositoryInterface->updateTeam($id, $request->all()));
+            return response()->json([
+                'message' => "Team {$id} atualizado com sucesso",
+            ], JsonResponse::HTTP_OK);
+
+        } catch(\Exception $e) {
+            return response()->json([
+                'data' => [],
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -65,7 +80,7 @@ class BalldontlieTeamsController extends Controller
             }
 
 
-            $team = BalldontliesTeamsResource::collection($this->balldontliesTeamsRepositoryInterface->searchByColumn($column, $value));
+            $team = BalldontlieTeamResource::collection($this->balldontlieTeamRepositoryInterface->searchByColumn($column, $value));
             return response()->json([
                 'data' => $team,
             ], JsonResponse::HTTP_OK);
@@ -73,14 +88,15 @@ class BalldontlieTeamsController extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'data' => [],
-                'message' => $e->getMessage()
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function show($id): JsonResponse {
         try {
-            $team = new BalldontliesTeamsResource($this->balldontliesTeamsRepositoryInterface->getTeamById($id));
+            $team = new BalldontlieTeamResource($this->balldontlieTeamRepositoryInterface->getTeamById($id));
             return response()->json([
                 'data' => $team,
             ], JsonResponse::HTTP_OK);
@@ -88,14 +104,15 @@ class BalldontlieTeamsController extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'data' => [],
-                'message' => $e->getMessage()
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function delete($id): JsonResponse {
         try {
-            $this->balldontliesTeamsRepositoryInterface->deleteTeam($id);
+            $this->balldontlieTeamRepositoryInterface->deleteTeam($id);
 
             return response()->json([
                 'message' => 'Time excluido com sucesso'
@@ -104,7 +121,8 @@ class BalldontlieTeamsController extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'data' => [],
-                'message' => $e->getMessage()
+                'errorMessage' => $e->getMessage(),
+                'errorCode' => $e->getCode(),
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
