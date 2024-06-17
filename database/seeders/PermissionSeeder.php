@@ -12,6 +12,8 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        Permission::create(['name' => 'delete-registers']);
+        Permission::create(['name' => 'admin-crud']);
+        Permission::create(['name' => 'user-crud']);
+
     }
 }

@@ -9,6 +9,8 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Resources\User\UserResource;
 use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Requests\User\UserUpdateRequest;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
@@ -53,10 +55,32 @@ class UserController extends Controller
     public function store(UserStoreRequest $request): JsonResponse {
         try {
 
+            $userAuth = $this->userRepository->getUserById(auth()->user()->id);
             $arrUsers = $request->all();
-            $arrUsers['password'] = bcrypt($request->password);
             $users = new UserResource($this->userRepository->createUser($arrUsers));
+            $message = '';
+            if($request->has('is_admin') && $userAuth->hasRole('admin') )   {
+                $userAdmin = $this->userRepository->getUserById($users->id);;
+                $role = Role::where('name', 'admin')->first();
+                $permissions = Permission::pluck('id', 'id')->where('name', 'admin-crud')->first();
+                $role->syncPermissions($permissions);
+                $userAdmin->assignRole([$role->id]);
+                $message = 'Usuario com Perfil de Admin Criado com sucesso';
+
+            }
+
+            if(!$request->has('is_admin') || $userAuth->hasRole('user')) {
+                $userAdmin = $this->userRepository->getUserById($users->id);;
+                $role = Role::where('name', 'user')->first();
+                $permissions = Permission::pluck('id', 'id')->where('name', 'user-crud')->first();
+                $role->syncPermissions($permissions);
+                $userAdmin->assignRole([$role->id]);
+                $message = 'Usuario com Perfil de User Criado com sucesso';
+            }
+
+
             return response()->json([
+                'message' => $message,
                 'data' => $users,
             ], JsonResponse::HTTP_CREATED);
 
@@ -100,11 +124,29 @@ class UserController extends Controller
 
     public function update($id, UserUpdateRequest $request): JsonResponse {
         try {
+            $userAuth = $this->userRepository->getUserById(auth()->user()->id);
             $arrUsers = $request->all();
-
-            $arrUsers['password'] = bcrypt($request->password);
             $this->userRepository->updateUser($id, $arrUsers);
             $users = new UserResource($this->userRepository->getUserById($id));
+
+            if($request->has('is_admin') && $userAuth->hasRole('admin') )   {
+                $userAdmin = $this->userRepository->getUserById($users->id);;
+                $role = Role::where('name', 'admin')->first();
+                $permissions = Permission::pluck('id', 'id')->where('name', 'admin-crud')->first();
+                $role->syncPermissions($permissions);
+                $userAdmin->assignRole([$role->id]);
+                $message = 'Usuario com Perfil de Admin Criado com sucesso';
+
+            }
+
+            if(!$request->has('is_admin') || $userAuth->hasRole('user')) {
+                $userAdmin = $this->userRepository->getUserById($users->id);;
+                $role = Role::where('name', 'user')->first();
+                $permissions = Permission::pluck('id', 'id')->where('name', 'user-crud')->first();
+                $role->syncPermissions($permissions);
+                $userAdmin->assignRole([$role->id]);
+                $message = 'Usuario com Perfil de User Criado com sucesso';
+            }
             return response()->json([
                 'data' => $users,
             ], JsonResponse::HTTP_OK);
@@ -120,6 +162,7 @@ class UserController extends Controller
 
     public function delete($id): JsonResponse {
         try {
+
             $this->userRepository->deleteUser($id);
 
             return response()->json([
