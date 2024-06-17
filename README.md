@@ -14,7 +14,7 @@ cp .env.example .env
 
 Para utilizar docker suba os containers do projeto
 ```sh
-docker-compose up -d
+docker-compose up -d ou docker compose up -d 
 ```
 
 Para utilizar o servidor interno do laravel (Antes de iniciar Instalar as dependencias do projeto)
@@ -24,11 +24,14 @@ php artisan serve --port 8989
 
 Acessar o container
 ```sh
-docker-compose exec app bash
+docker exec -it {nome-da-pasta}-app-1 bash
 ```
 
 Instalar as dependências do projeto
 ```sh
+(caso tenha problema com permissão na pasta executar 
+sudo chmod 777 -R ./t4tech-validation-teste/)
+
 composer install
 ```
 
@@ -54,7 +57,7 @@ php artisan balldontlie-teams:get
 
 Importar Balldontlie Player 
 ```sh
-php balldontlie-players:get
+php artisan balldontlie-players:get
 ```
 
 Json para Postman

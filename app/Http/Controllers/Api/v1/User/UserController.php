@@ -125,12 +125,12 @@ class UserController extends Controller
 
             if(($request->has('is_admin') && $request->is_admin === true) && $userAuth->hasRole('admin') )   {
                 $this->userRoleAndPermissionService->saveUserWhithRoleAdmin($user, true);
-                $message = 'Usuario com Perfil de Admin Criado com sucesso';
+                $message = 'Usuario com Perfil de Admin salvo com sucesso';
             }
 
             if((!$request->has('is_admin') || $request->is_admin === false) || $userAuth->hasRole('user')) {
                 $this->userRoleAndPermissionService->saveUserWhithRoleUser($user, true);
-                $message = "Usuario com Perfil de User Criado com sucesso";
+                $message = "Usuario com Perfil de User salvo com sucesso";
             }
 
 
