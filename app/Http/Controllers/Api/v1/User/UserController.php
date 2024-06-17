@@ -9,14 +9,13 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Resources\User\UserResource;
 use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Requests\User\UserUpdateRequest;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-
+use App\Services\UserRoleAndPermissionService;
 class UserController extends Controller
 {
 
     public function __construct(
-        private readonly UserRepositoryInterface $userRepository
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly UserRoleAndPermissionService $userRoleAndPermissionService
     ) {}
 
     public function index(): JsonResponse {
@@ -54,34 +53,26 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request): JsonResponse {
         try {
-
             $userAuth = $this->userRepository->getUserById(auth()->user()->id);
-            $arrUsers = $request->all();
-            $users = new UserResource($this->userRepository->createUser($arrUsers));
+
+
+            $user = new UserResource($this->userRepository->createUser($request->all()));
+            $users = [];
             $message = '';
-            if($request->has('is_admin') && $userAuth->hasRole('admin') )   {
-                $userAdmin = $this->userRepository->getUserById($users->id);;
-                $role = Role::where('name', 'admin')->first();
-                $permissions = Permission::pluck('id', 'id')->where('name', 'admin-crud')->first();
-                $role->syncPermissions($permissions);
-                $userAdmin->assignRole([$role->id]);
+
+            if(($request->has('is_admin') && $request->is_admin === true) && $userAuth->hasRole('admin') )   {
+                $this->userRoleAndPermissionService->saveUserWhithRoleAdmin($user, false);
                 $message = 'Usuario com Perfil de Admin Criado com sucesso';
-
             }
 
-            if(!$request->has('is_admin') || $userAuth->hasRole('user')) {
-                $userAdmin = $this->userRepository->getUserById($users->id);;
-                $role = Role::where('name', 'user')->first();
-                $permissions = Permission::pluck('id', 'id')->where('name', 'user-crud')->first();
-                $role->syncPermissions($permissions);
-                $userAdmin->assignRole([$role->id]);
-                $message = 'Usuario com Perfil de User Criado com sucesso';
+            if((!$request->has('is_admin') || $request->is_admin === false) || $userAuth->hasRole('user')) {
+                $this->userRoleAndPermissionService->saveUserWhithRoleUser($user, false);
+                $message = "Usuario com Perfil de User Criado com sucesso";
             }
-
 
             return response()->json([
                 'message' => $message,
-                'data' => $users,
+                'data' => $user,
             ], JsonResponse::HTTP_CREATED);
 
         } catch(\Exception $e) {
@@ -125,30 +116,27 @@ class UserController extends Controller
     public function update($id, UserUpdateRequest $request): JsonResponse {
         try {
             $userAuth = $this->userRepository->getUserById(auth()->user()->id);
+            $user = $this->userRepository->getUserById($id);
             $arrUsers = $request->all();
             $this->userRepository->updateUser($id, $arrUsers);
-            $users = new UserResource($this->userRepository->getUserById($id));
+            $message = '';
 
-            if($request->has('is_admin') && $userAuth->hasRole('admin') )   {
-                $userAdmin = $this->userRepository->getUserById($users->id);;
-                $role = Role::where('name', 'admin')->first();
-                $permissions = Permission::pluck('id', 'id')->where('name', 'admin-crud')->first();
-                $role->syncPermissions($permissions);
-                $userAdmin->assignRole([$role->id]);
+            $this->userRoleAndPermissionService->removeRolesAndPermissionsFromUser($id);
+
+            if(($request->has('is_admin') && $request->is_admin === true) && $userAuth->hasRole('admin') )   {
+                $this->userRoleAndPermissionService->saveUserWhithRoleAdmin($user, true);
                 $message = 'Usuario com Perfil de Admin Criado com sucesso';
-
             }
 
-            if(!$request->has('is_admin') || $userAuth->hasRole('user')) {
-                $userAdmin = $this->userRepository->getUserById($users->id);;
-                $role = Role::where('name', 'user')->first();
-                $permissions = Permission::pluck('id', 'id')->where('name', 'user-crud')->first();
-                $role->syncPermissions($permissions);
-                $userAdmin->assignRole([$role->id]);
-                $message = 'Usuario com Perfil de User Criado com sucesso';
+            if((!$request->has('is_admin') || $request->is_admin === false) || $userAuth->hasRole('user')) {
+                $this->userRoleAndPermissionService->saveUserWhithRoleUser($user, true);
+                $message = "Usuario com Perfil de User Criado com sucesso";
             }
+
+
             return response()->json([
-                'data' => $users,
+                'message' => $message,
+                'data' => $user,
             ], JsonResponse::HTTP_OK);
 
         } catch(\Exception $e) {
@@ -162,6 +150,9 @@ class UserController extends Controller
 
     public function delete($id): JsonResponse {
         try {
+
+            $user = $this->userRepository->getUserById(auth()->user()->id);
+            $permissions = $user->getPermissionNames();
 
             $this->userRepository->deleteUser($id);
 

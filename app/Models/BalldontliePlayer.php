@@ -27,8 +27,4 @@ class BalldontliePlayer extends Model
         'balldontlies_team_id'
     ];
 
-
-    public function balldontliesTeams() {
-        return $this->hasMany(BalldontliesTeams::class, 'balldontlies_team_id', 'balldontlie_team_id');
-    }
 }

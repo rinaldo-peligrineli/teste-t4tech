@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('abbreviation')->nullable();
             $table->index(['balldontlie_team_id'], 'balldontlies_teams_index');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
