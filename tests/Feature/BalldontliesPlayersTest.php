@@ -53,7 +53,7 @@ class BalldontliesPlayersTest extends TestCase
         $header = $this->makeAuthAdmin();
         $player = BalldontliePlayer::factory()->create();
 
-        $response = $this->getJson('/api/balldontlies/players/3' , $header);
+        $response = $this->getJson('/api/balldontlies/players/' . $player['id'] , $header);
 
         $response->assertOk()
             ->assertJsonCount(1);
@@ -64,9 +64,7 @@ class BalldontliesPlayersTest extends TestCase
      {
         $header = $this->makeAuthAdmin();
         $player = BalldontliePlayer::factory()->create();
-
         $response = $this->deleteJson('/api/balldontlies/players/delete/' . $player['id'], [], $header);
-
         $response->assertOk();
 
      }
