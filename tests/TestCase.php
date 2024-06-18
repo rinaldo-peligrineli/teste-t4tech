@@ -11,12 +11,13 @@ abstract class TestCase extends BaseTestCase
     public function makeAuthAdmin($isAddAuthorizationToken = true): array
     {
         $userData = [
-            'email' => 'admin@t4tech-teste.com',
+            'email' => 'administrator@t4tech.com',
             'password' => 'admin@1234'
         ];
 
         $response = $this->postJson('/api/auth', $userData);
         $data = json_decode($response->getContent());
+
 
         if(!$isAddAuthorizationToken) {
             return $headers = [
@@ -30,13 +31,14 @@ abstract class TestCase extends BaseTestCase
         ];
 
 
+
         return $headers;
     }
 
     public function makeAuthUser(): array
     {
         $userData = [
-            'email' => 'user@t4tech-teste.com',
+            'email' => 'user@t4tech.com',
             'password' => 'user@1234'
         ];
 
@@ -50,7 +52,4 @@ abstract class TestCase extends BaseTestCase
 
         return $headers;
     }
-
-
-
 }

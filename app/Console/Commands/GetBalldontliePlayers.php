@@ -59,6 +59,7 @@ class GetBalldontliePlayers extends Command
 
                 BalldontliePlayer::create($arrPlayer);
                 $count++;
+
             }
 
             if(!property_exists($players->meta, "next_cursor")) {

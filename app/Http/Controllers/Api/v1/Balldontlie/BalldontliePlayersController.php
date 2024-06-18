@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Resources\Balldontlie\BalldontliePlayerResource;
 use App\Http\Requests\Balldontlie\BalldontliePlayerStoreRequest;
 use App\Http\Requests\Balldontlie\BalldontliePlayerUpdateRequest;
-
+use App\Models\BalldontliePlayer;
 class BalldontliePlayersController extends Controller
 {
 
@@ -39,9 +39,12 @@ class BalldontliePlayersController extends Controller
 
     public function store(BalldontliePlayerStoreRequest $request): JsonResponse {
         try {
-            $team = new BalldontliePlayerResource( $this->balldontliePlayerRepositoryInterface->createPlayer($request->all()));
+
+
+            //$player = new BalldontliePlayerResource( $this->balldontliePlayerRepositoryInterface->createPlayer($request->all()));
+            $player = BalldontliePlayer::create($request->all());
             return response()->json([
-                'data' => $team,
+                'data' => $player,
             ], JsonResponse::HTTP_CREATED);
 
         } catch(\Exception $e) {

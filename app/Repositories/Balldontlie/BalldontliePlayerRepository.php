@@ -32,9 +32,9 @@ class BalldontliePlayerRepository implements BalldontliePlayerRepositoryInterfac
         BalldontliePlayer::destroy($id);
     }
 
-    public function createPlayer(array $teamDetails)
+    public function createPlayer(array $playerDetails)
     {
-        return BalldontliePlayer::create($teamDetails);
+        return BalldontliePlayer::create($playerDetails);
     }
 
     public function updatePlayer($id, array $newDetails)

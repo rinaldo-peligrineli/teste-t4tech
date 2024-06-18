@@ -21,4 +21,7 @@ class BalldontliesTeams extends Model
         'full_name',
         'abbreviation'
     ];
+
+
+
 }
