@@ -152,7 +152,6 @@ class UserController extends Controller
         try {
 
             $user = $this->userRepository->getUserById(auth()->user()->id);
-            $permissions = $user->getPermissionNames();
 
             $this->userRepository->deleteUser($id);
 

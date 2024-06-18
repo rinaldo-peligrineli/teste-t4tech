@@ -70,9 +70,9 @@ class BalldontliePlayersController extends Controller
                 $value = $request->last_name;
             }
 
-            $team = BalldontliePlayerResource::collection($this->balldontliePlayerRepositoryInterface->searchByColumn($column, $value));
+            $players = BalldontliePlayerResource::collection($this->balldontliePlayerRepositoryInterface->searchByColumn($column, $value));
             return response()->json([
-                'data' => $team,
+                'data' => $players,
             ], JsonResponse::HTTP_OK);
 
         } catch(\Exception $e) {
@@ -104,7 +104,7 @@ class BalldontliePlayersController extends Controller
         try {
             $player = new BalldontliePlayerResource($this->balldontliePlayerRepositoryInterface->getPlayerById($id));
             return response()->json([
-                'message' => "Team {$id} atualizado com sucesso",
+                'message' => "Jogador {$id} atualizado com sucesso",
             ], JsonResponse::HTTP_OK);
 
         } catch(\Exception $e) {
