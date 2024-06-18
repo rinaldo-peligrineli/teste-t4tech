@@ -62,7 +62,7 @@ php artisan balldontlie-players:get
 
 Json para Postman
 ```sh
-Importar o arquivo Apis-t4tech-teste.json para o postman
+Importar o arquivo Apis-t4tech-teste_collection.json para o postman
 
 X-Authorization
 ```sh

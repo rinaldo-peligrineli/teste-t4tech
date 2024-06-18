@@ -1,0 +1,670 @@
+{
+	"info": {
+		"_postman_id": "e1a602d3-7af3-4542-b435-13256949bbf3",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22798237",
+		"_collection_link": "https://speeding-resonance-121980.postman.co/workspace/t4tech~26a54567-b1c4-4287-a09a-b71d226947be/collection/22798237-e1a602d3-7af3-4542-b435-13256949bbf3?action=share&source=collection_link&creator=22798237"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody); ",
+									"pm.environment.set('token', jsonData['token']);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"admin@t4tech-teste.com\",\n    \"password\" : \"admin@1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8989/api/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8989",
+							"path": [
+								"api",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8989/api/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8989",
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Search",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Authorization",
+								"value": "9dc44621-e11a-437e-a685-ef3d6089ced9",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8989/api/users/sarch?name=Admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8989",
+							"path": [
+								"api",
+								"users",
+								"sarch"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Admin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "store",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Authorization",
+								"value": "9dc44621-e11a-437e-a685-ef3d6089ced9",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Teste Perfil User\",\n    \"email\":\"user-teste@teste.com\",\n    \"password\":\"user@1234\",\n    \"is_admin\" : true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8989/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8989",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-Authorization",
+								"value": "9dc44621-e11a-437e-a685-ef3d6089ced9",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Teste Perfil User\",\n    \"email\":\"user-teste-host@teste.com\",\n    \"password\":\"user@1234\",\n    \"is_admin\" : false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8989/api/users/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8989",
+							"path": [
+								"api",
+								"users",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8989/api/users/delete/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8989",
+							"path": [
+								"api",
+								"users",
+								"delete",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Balldontie",
+			"item": [
+				{
+					"name": "Teams",
+					"item": [
+						{
+							"name": "Listar",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Search",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "9dc44621-e11a-437e-a685-ef3d6089ced9",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8989/api/balldontlies/team/search",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8989",
+									"path": [
+										"api",
+										"balldontlies",
+										"team",
+										"search"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "9dc44621-e11a-437e-a685-ef3d6089ced9",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8989/api/balldontlies/teams/46",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8989",
+									"path": [
+										"api",
+										"balldontlies",
+										"teams",
+										"46"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Store",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "9dc44621-e11a-437e-a685-ef3d6089ced9",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"conference\" : \"East\",\n    \"division\" : \"Central\",\n    \"city\" : \"Cbicago\",\n    \"name\" : \"Api Include\",  \n    \"full_name\" : \"APi Included by Postman\",  \n    \"abbreviation\" : \"TST\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8989/api/balldontlies/teams",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8989",
+									"path": [
+										"api",
+										"balldontlies",
+										"teams"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "9dc44621-e11a-437e-a685-ef3d6089ced9",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"conference\" : \"East\",\n    \"division\" : \"Central\",\n    \"city\" : \"Cbicago\",\n    \"name\" : \"Api Include\",  \n    \"full_name\" : \"APi Included by Postman\",  \n    \"abbreviation\" : \"TST\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8989/api/balldontlies/teams/10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8989",
+									"path": [
+										"api",
+										"balldontlies",
+										"teams",
+										"10"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Players",
+					"item": [
+						{
+							"name": "List",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "9dc44621-e11a-437e-a685-ef3d6089ced9",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8989/api/balldontlies/players",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8989",
+									"path": [
+										"api",
+										"balldontlies",
+										"players"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8989/api/balldontlies/player/search?full_name=Chicago",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8989",
+									"path": [
+										"api",
+										"balldontlies",
+										"player",
+										"search"
+									],
+									"query": [
+										{
+											"key": "full_name",
+											"value": "Chicago"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Store",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "9dc44621-e11a-437e-a685-ef3d6089ced9",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"balldontlie_player_origin_id\" : 1000,\n    \"first_name\" : \"Rinaldo\",\n    \"last_name\" : \"Peligrineli\",\n    \"position\" : \"D-M\",\n    \"height\" : \"6-9\",\n    \"weigth\" : \"190\",\n    \"jersey_number\" : \"3\",\n    \"college\" : \"São Paulo FC\",\n    \"country\" : \"Brazil\",\n    \"draft_year\" : \"2023\",\n    \"draft_round\" : \"1\",\n    \"draft_number\" : \"45\",\n    \"balldontlies_team_id\" : 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8989/api/balldontlies/players",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8989",
+									"path": [
+										"api",
+										"balldontlies",
+										"players"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "9dc44621-e11a-437e-a685-ef3d6089ced9",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8989/api/balldontlies/players/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8989",
+									"path": [
+										"api",
+										"balldontlies",
+										"players",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "9dc44621-e11a-437e-a685-ef3d6089ced9",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "      \"id\": 5243,\n        \"first_name\": \"Rinaldo\",\n        \"last_name\": \"Peligrineli\",\n        \"position\": \"D-M\",\n        \"height\": \"6-9\",\n        \"weight\": null,\n        \"jersey_number\": \"3\",\n        \"college\": \"São Paulo FC\",\n        \"country\": \"Brazil\",\n        \"draft_year\": \"2023\",\n        \"draft_round\": null,\n        \"draft_number\": \"45\",",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8989/api/balldontlies/players/5243",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8989",
+									"path": [
+										"api",
+										"balldontlies",
+										"players",
+										"5243"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
