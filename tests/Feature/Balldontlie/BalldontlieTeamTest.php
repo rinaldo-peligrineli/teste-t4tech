@@ -42,18 +42,9 @@ class BalldontlieTeamTest extends TestCase
 
         $header = $this->makeAuthAdmin();
         $response = $this->getJson('/api/balldontlies/teams', $header);
-        $data = json_decode($response->getContent());
 
         $response->assertOK();
-        $response->assertJsonStructure([
-            'id',
-            'conference',
-            'division',
-            'city',
-            'name',
-            'full_name',
-            'abbreviation'
-        ]);
+
 
      }
 

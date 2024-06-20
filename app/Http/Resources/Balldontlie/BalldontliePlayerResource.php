@@ -21,7 +21,7 @@ class BalldontliePlayerResource extends JsonResource
             'last_name' => $this->last_name,
             'position' => $this->position,
             'height' => $this->height,
-            'pweight' => $this->pweight,
+            'weigth' => $this->weigth,
             'jersey_number' => $this->jersey_number,
             'college' => $this->college,
             'country' => $this->country,

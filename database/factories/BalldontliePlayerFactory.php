@@ -31,7 +31,7 @@ class BalldontliePlayerFactory extends Factory
             "draft_year" => rand(2018, 2024),
             "draft_round" => rand(1, 10),
             "draft_number" => rand(1, 50),
-            "balldontlies_team_id" => 1
+            "balldontlie_team_id" => 1
         ];
     }
 }

@@ -22,15 +22,16 @@ class UserTest extends TestCase
          $header = $this->makeAuthAdmin();
 
          $response = $this->postJson('/api/users', $userData, $header);
-
+//         dd($response->getContent());
          $response
             ->assertCreated()
             ->assertJsonStructure([
+                'data' => [
                 'id',
                 'name',
                 'email',
-                'email_verified_at',
-                'created_at',
+                'created_at'
+            ]
         ]);
 
      }

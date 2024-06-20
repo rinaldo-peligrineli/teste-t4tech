@@ -61,10 +61,26 @@ class BalldontliePlayerTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 'id',
-                'name',
-                'email',
-                'created_at',
-                'updated_at'
+                'first_name',
+                'last_name',
+                'position',
+                'height',
+                'weigth',
+                'jersey_number',
+                'college',
+                'country',
+                'draft_year',
+                'draft_round',
+                'draft_number',
+                'team' => [
+                    'id',
+                    'conference',
+                    'division',
+                    'city',
+                    'name',
+                    'full_name',
+                    'abreviation',
+                ]
             ]
         ]);
 

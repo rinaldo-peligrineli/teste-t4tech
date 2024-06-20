@@ -3,9 +3,6 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-
 class AuthTest extends TestCase
 {
 
@@ -36,13 +33,13 @@ class AuthTest extends TestCase
 
      }
 
-     public function testCannotMakelogin(): void
+     public function testCannotMakeloginWithInvalidCredentials(): void
      {
 
-         $userData = [
-             'email' => 'admin@t4tech-teste.com',
-             'password' => 'admin@1235'
-         ];
+        $userData = [
+            'email' => 'admin@t4tech.com',
+            'password' => 'admin@1234'
+        ];
 
          $response = $this->postJson('/api/auth', $userData);
 
@@ -53,14 +50,7 @@ class AuthTest extends TestCase
 
      public function testCanMakeLogout(): void
      {
-        $userData = [
-            'email' => 'admin@t4tech-teste.com',
-            'password' => 'admin@1234'
-        ];
-
-        $response = $this->postJson('/api/auth', $userData);
-        $data = json_decode($response->getContent());
-        $headers = ['Authorization' => 'Bearer ' . $data->token];
+        $headers = $this->makeAuthUser();
         $response = $this->postJson('/api/auth/logout', [], $headers);
         $response->assertOK();
      }
