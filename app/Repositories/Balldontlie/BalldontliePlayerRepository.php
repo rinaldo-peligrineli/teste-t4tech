@@ -9,22 +9,17 @@ class BalldontliePlayerRepository implements BalldontliePlayerRepositoryInterfac
 {
     public function getAllPlayers()
     {
-        return BalldontliePlayer::select('balldontlie_players.*', 'balldontlies_teams.id as team_id', 'balldontlies_teams.conference')->join('balldontlies_teams', 'balldontlies_teams.balldontlie_team_id', '=', 'balldontlie_players.balldontlies_team_id')->get();
+        return BalldontliePlayer::with('balldontlieTeam')->all();
     }
 
     public function getAllPlayersPaginate($perPage, $page)
     {
-        return BalldontliePlayer::select('balldontlie_players.*', 'balldontlies_teams.id as team_id', 'balldontlies_teams.conference')->join('balldontlies_teams', 'balldontlies_teams.balldontlie_team_id', '=', 'balldontlie_players.balldontlies_team_id')
-            ->orderBy('balldontlie_players.id')
-            ->paginate($perPage, ['*'], 'page', $page);
+        return BalldontliePlayer::with('balldontlieTeam')->paginate($perPage, ['*'], 'page', $page);
     }
 
     public function getPlayerById($id)
     {
-        return BalldontliePlayer::
-            select('balldontlie_players.*', 'balldontlies_teams.id as team_id', 'balldontlies_teams.conference')
-            ->join('balldontlies_teams', 'balldontlies_teams.balldontlie_team_id', '=', 'balldontlie_players.balldontlies_team_id')
-            ->findOrFail($id);
+        return BalldontliePlayer::with('balldontlieTeam')->find($id);
     }
 
     public function deletePlayer($id)
@@ -43,9 +38,7 @@ class BalldontliePlayerRepository implements BalldontliePlayerRepositoryInterfac
     }
 
     public function searchByColumn($column, $value) {
-        return BalldontliePlayer::
-            select('balldontlie_players.*', 'balldontlies_teams.id as team_id', 'balldontlies_teams.conference')
-            ->join('balldontlies_teams', 'balldontlies_teams.balldontlie_team_id', '=', 'balldontlie_players.balldontlies_team_id')
+        return BalldontliePlayer::with('balldontlieTeam')
             ->where($column, 'LIKE', "%{$value}%")
             ->get();
 

@@ -55,9 +55,8 @@ class UserController extends Controller
         try {
             $userAuth = $this->userRepository->getUserById(auth()->user()->id);
 
-
             $user = new UserResource($this->userRepository->createUser($request->all()));
-            $users = [];
+
             $message = '';
 
             if(($request->has('is_admin') && $request->is_admin === true) && $userAuth->hasRole('admin') )   {
@@ -132,7 +131,6 @@ class UserController extends Controller
                 $this->userRoleAndPermissionService->saveUserWhithRoleUser($user, true);
                 $message = "Usuario com Perfil de User salvo com sucesso";
             }
-
 
             return response()->json([
                 'message' => $message,

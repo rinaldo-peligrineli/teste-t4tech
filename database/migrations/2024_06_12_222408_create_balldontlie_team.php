@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('balldontlies_teams', function (Blueprint $table) {
+        Schema::create('balldontlie_team', function (Blueprint $table) {
             $table->id();
             $table->string('conference')->nullable();
             $table->unsignedBigInteger('balldontlie_team_id')->nullable();
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('full_name')->nullable();
             $table->string('abbreviation')->nullable();
-            $table->index(['balldontlie_team_id'], 'balldontlies_teams_index');
+            $table->index(['balldontlie_team_id'], 'balldontlie_team_index');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('balldontlies_teams');
+        Schema::dropIfExists('balldontlie_team');
     }
 };

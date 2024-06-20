@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('balldontlie_players', function (Blueprint $table) {
+        Schema::create('balldontlie_player', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('balldontlie_player_origin_id')->nullable();
             $table->string('first_name')->nullable();
@@ -25,7 +25,8 @@ return new class extends Migration
             $table->integer('draft_year')->nullable();
             $table->integer('draft_round')->nullable();
             $table->integer('draft_number')->nullable();
-            $table->foreignId('balldontlies_team_id')->constrained('balldontlies_teams', 'balldontlie_team_id', 'balldontlies_teams_index');
+            $table->index(['balldontlie_player_origin_id'], 'balldontlie_player_index');
+            $table->foreignId('balldontlie_team_id')->constrained('balldontlie_team');
             $table->timestamps();
         });
     }
@@ -35,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('balldontlie_players');
+        Schema::dropIfExists('balldontlie_player');
     }
 };

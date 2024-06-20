@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BalldontliesTeams>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BalldontlieTeam>
  */
-class BalldontliesTeamsFactory extends Factory
+class BalldontlieTeamFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,14 +17,13 @@ class BalldontliesTeamsFactory extends Factory
      */
     public function definition(): array
     {
-
          return [
             'balldontlie_team_id' => 1000,
             "conference" => "East",
             "division" => "Central",
-            "city" => "Chicago",
-            "name" => fake()->city(),
-            "full_name" => fake()->city(),
+            "city" => fake()->city(),
+            "name" => fake()->name(),
+            "full_name" => fake()->name(),
             "abbreviation" => Str::upper(Str::random(3)),
         ];
     }

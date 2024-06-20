@@ -3,36 +3,36 @@
 namespace App\Repositories\Balldontlie;
 
 use App\Interfaces\Balldontlie\BalldontlieTeamRepositoryInterface;
-use App\Models\BalldontliesTeams;
+use App\Models\BalldontlieTeam;
 
 class BalldontlieTeamRepository implements BalldontlieTeamRepositoryInterface
 {
     public function getAllTeams()
     {
-        return BalldontliesTeams::all();
+        return BalldontlieTeam::all();
     }
 
     public function getTeamById($id)
     {
-        return BalldontliesTeams::findOrFail($id);
+        return BalldontlieTeam::findOrFail($id);
     }
 
     public function deleteTeam($id)
     {
-        BalldontliesTeams::destroy($id);
+        BalldontlieTeam::destroy($id);
     }
 
     public function createTeam(array $teamDetails)
     {
-        return BalldontliesTeams::create($teamDetails);
+        return BalldontlieTeam::create($teamDetails);
     }
 
     public function updateTeam($id, array $newDetails)
     {
-        return BalldontliesTeams::find($id)->update($newDetails);
+        return BalldontlieTeam::find($id)->update($newDetails);
     }
 
     public function searchByColumn($column, $value) {
-        return BalldontliesTeams::where($column, 'LIKE', "%{$value}%")->get();
+        return BalldontlieTeam::where($column, 'LIKE', "%{$value}%")->get();
     }
 }

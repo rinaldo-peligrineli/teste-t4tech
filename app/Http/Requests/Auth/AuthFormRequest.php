@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Requests\Balldontlie;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class BalldontlieTeamUpdateRequest extends FormRequest
+
+class AuthFormRequest extends FormRequest
 {
-     /**
+    /**
     * Determine if the user is authorized to make this request.
     *
     * @return bool
@@ -26,13 +27,8 @@ class BalldontlieTeamUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'conference' => 'required',
-            'division' => 'required',
-            'city' => 'required',
-            'name' => 'required',
-            'full_name' => 'required',
-            'abbreviation' => 'required|unique:balldontlie_team,abbreviation'
-
+            'email' => 'required|email',
+            'password' => 'required|min:8'
         ];
     }
 
@@ -48,12 +44,11 @@ class BalldontlieTeamUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'conference.required' => 'O Campo Conference é obrigatório',
-            'city.required' => 'O Campo City é obrigatório',
-            'name.required' => 'O Campo Name é obrigatório',
-            'full_name.required' => 'O Campo Full Name é obrigatório',
-            'abbreviation.required' => 'O Campo Abbreviation é obrigatório',
-            'abbreviation.unique' => 'O Valor do Campo Abbreviation deve ser unico'
+            'email.required' => 'O Campo Email é obrigatório',
+            'email.email' => 'O Campo Email possui um formato invalido',
+            'password.required' => 'O Campo senha é obrigatório',
+            'password.min' => 'O Campo senha deve conter no mínimo 8 caracteres'
         ];
     }
+
 }

@@ -6,15 +6,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class UserProfile extends Model
+class BalldontlieTeam extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table= 'users_profiles';
+    protected $table = 'balldontlie_team';
 
     protected $fillable = [
-        'user_id',
-        'profile_id',
+        'balldontlie_team_id',
+        'conference',
+        'division',
+        'city',
+        'name',
+        'full_name',
+        'abbreviation'
     ];
+
+
 
 }

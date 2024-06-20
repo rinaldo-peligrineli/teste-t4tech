@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Auth\AuthFormRequest;
 
 class AuthController extends Controller
 {
@@ -15,7 +16,7 @@ class AuthController extends Controller
     public function __construct(
         private readonly UserRepositoryInterface $userRepository){}
 
-    public function login(Request $request): JsonResponse {
+    public function login(AuthFormRequest $request): JsonResponse {
         try {
             $email = $request->email;
             $user = $this->userRepository->getUserByEmail($email);

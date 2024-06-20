@@ -31,7 +31,7 @@ class BalldontlieTeamStoreRequest extends FormRequest
             'city' => 'required',
             'name' => 'required',
             'full_name' => 'required',
-            'abbreviation' => 'required|unique:balldontlies_teams,abbreviation'
+            'abbreviation' => 'required|unique:balldontlie_team,abbreviation'
 
         ];
     }

@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-use App\Models\BalldontliesTeams;
+use App\Models\BalldontlieTeam;
 
 class GetBalldontlieTeams extends Command
 {
@@ -13,7 +13,7 @@ class GetBalldontlieTeams extends Command
      *
      * @var string
      */
-    protected $signature = 'balldontlie-teams:get';
+    protected $signature = 'balldontlie-teams';
 
     /**
      * The console command description.
@@ -22,20 +22,22 @@ class GetBalldontlieTeams extends Command
      */
     protected $description = 'Get Balldontlie Teams';
 
-    const PATH = 'https://api.balldontlie.io/v1';
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'eabe2808-4427-4606-832d-c83bf8f1cbc3',
-        ])->get(sprintf('%s%s', self::PATH, '/teams'));
+        $url = config('balldontlieapi.config.url');
+        $apiKey = config('balldontlieapi.config.api_key');
 
+        $response = Http::withHeaders([
+            'Authorization' => $apiKey,
+        ])->get(sprintf('%s%s', $url, '/teams'));
 
         $teams = json_decode($response->body());
-        $arrTeam = [];
 
+
+        $arrTeam = [];
 
         foreach($teams->data as $team) {
             $arrTeam["balldontlie_team_id"] = $team->id;
@@ -46,7 +48,7 @@ class GetBalldontlieTeams extends Command
             $arrTeam["full_name"] = $team->full_name;
             $arrTeam["abbreviation"] = $team->abbreviation;
 
-            BalldontliesTeams::create($arrTeam);
+            BalldontlieTeam::create($arrTeam);
         }
 
         $this->info('Registros inseridos');

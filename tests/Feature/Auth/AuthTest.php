@@ -12,10 +12,10 @@ class AuthTest extends TestCase
      public function testCanBeMakeLogin(): void
      {
 
-         $userData = [
-             'email' => 'admin@t4tech-teste.com',
-             'password' => 'admin@1234'
-         ];
+        $userData = [
+            'email' => 'administrator@t4tech.com',
+            'password' => 'admin@1234'
+        ];
 
          $response = $this->postJson('/api/auth', $userData);
 

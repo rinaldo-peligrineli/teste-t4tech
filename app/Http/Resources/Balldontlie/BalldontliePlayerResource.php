@@ -14,6 +14,7 @@ class BalldontliePlayerResource extends JsonResource
      */
     public function toArray($request)
     {
+
         return [
             'id' => $this->id,
             'first_name' => $this->first_name,
@@ -28,13 +29,13 @@ class BalldontliePlayerResource extends JsonResource
             'draft_round' => $this->round,
             'draft_number' => $this->draft_number,
             'team' => [
-                'id' => $this->team_id,
-                'conference' => $this->conference,
-                'division' => $this->division,
-                'city' => $this->city,
-                'name' => $this->name,
-                'full_name' => $this->full_name,
-                'abreviation' => $this->abbreviation,
+                'id' => $this->balldontlieTeam->id,
+                'conference' => $this->balldontlieTeam->conference,
+                'division' => $this->balldontlieTeam->division,
+                'city' => $this->balldontlieTeam->city,
+                'name' => $this->balldontlieTeam->name,
+                'full_name' => $this->balldontlieTeam->full_name,
+                'abreviation' => $this->balldontlieTeam->abbreviation,
             ]
         ];
     }

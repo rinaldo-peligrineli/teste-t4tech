@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\BalldontliesTeams;
 
-class BalldontliesTeamsTest extends TestCase
+class BalldontlieTeamTest extends TestCase
 {
 
     public function setUp(): void

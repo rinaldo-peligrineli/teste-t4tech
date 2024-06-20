@@ -37,7 +37,7 @@ class BalldontliePlayerUpdateRequest extends FormRequest
             "draft_year" => 'required',
             "draft_round" => 'required',
             "draft_number" => 'required',
-            'balldontlies_team_id' => 'required'
+            'balldontlie_team_id' => 'required'
 
         ];
     }
@@ -65,7 +65,7 @@ class BalldontliePlayerUpdateRequest extends FormRequest
             "draft_year.required" => 'O Campo Draft Year é obrigatório',
             "draft_round.required" => 'O Campo Draft Round é obrigatório',
             "draft_number.required" => 'O Campo Draft Number é obrigatório',
-            'balldontlies_team_id.required' => 'O Campo Balldontlies Team é obrigatório'
+            'balldontlie_team_id.required' => 'O Campo Balldontlies Team é obrigatório'
         ];
     }
 }

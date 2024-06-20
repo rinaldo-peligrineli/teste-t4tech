@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BalldontliePlayer extends Model
 {
     use HasFactory;
 
-    protected $table = 'balldontlie_players';
+    protected $table = 'balldontlie_player';
 
     protected $fillable = [
         'balldontlie_player_origin_id',
@@ -24,7 +25,12 @@ class BalldontliePlayer extends Model
         'draft_year',
         'draft_round',
         'draft_number',
-        'balldontlies_team_id'
+        'balldontlie_team_id'
     ];
+
+
+    public function balldontlieTeam(): BelongsTo {
+        return $this->belongsTo(BalldontlieTeam::class);
+    }
 
 }
