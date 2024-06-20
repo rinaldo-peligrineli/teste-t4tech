@@ -4,8 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-use App\Models\BalldontlieTeam;
-
+use App\Interfaces\Balldontlie\BalldontlieTeamRepositoryInterface;
 class GetBalldontlieTeams extends Command
 {
     /**
@@ -22,6 +21,10 @@ class GetBalldontlieTeams extends Command
      */
     protected $description = 'Get Balldontlie Teams';
 
+    public function __construct(private readonly BalldontlieTeamRepositoryInterface $balldontlieTeamRepositoryInterface)
+    {
+        parent::__construct();
+    }
     /**
      * Execute the console command.
      */
@@ -36,9 +39,6 @@ class GetBalldontlieTeams extends Command
 
         $teams = json_decode($response->body());
 
-
-        $arrTeam = [];
-
         foreach($teams->data as $team) {
             $arrTeam["balldontlie_team_id"] = $team->id;
             $arrTeam["conference"] = $team->conference;
@@ -48,7 +48,8 @@ class GetBalldontlieTeams extends Command
             $arrTeam["full_name"] = $team->full_name;
             $arrTeam["abbreviation"] = $team->abbreviation;
 
-            BalldontlieTeam::create($arrTeam);
+            $this->balldontlieTeamRepositoryInterface->createTeam($arrTeam);
+
         }
 
         $this->info('Registros inseridos');

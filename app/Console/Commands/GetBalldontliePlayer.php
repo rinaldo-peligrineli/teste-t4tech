@@ -4,17 +4,16 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-use App\Models\BalldontliePlayer;
 use App\Models\BalldontlieTeam;
-
-class GetBalldontliePlayers extends Command
+use App\Interfaces\Balldontlie\BalldontliePlayerRepositoryInterface;
+class GetBalldontliePlayer extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'balldontlie-players';
+    protected $signature = 'balldontlie-player';
 
     /**
      * The console command description.
@@ -23,6 +22,11 @@ class GetBalldontliePlayers extends Command
      */
     protected $description = 'Get Balldontlie Players';
 
+
+    public function __construct(private readonly BalldontliePlayerRepositoryInterface $balldontliePlayerRepositoryInterface)
+    {
+        parent::__construct();
+    }
     /**
      * Execute the console command.
      */
@@ -59,7 +63,7 @@ class GetBalldontliePlayers extends Command
                 $arrPlayer['draft_number'] = $data->draft_number;
                 $arrPlayer['balldontlie_team_id'] = $teams[$data->team->id];
 
-                BalldontliePlayer::create($arrPlayer);
+                $this->balldontliePlayerRepositoryInterface->createPlayer($arrPlayer);
                 $count++;
 
             }

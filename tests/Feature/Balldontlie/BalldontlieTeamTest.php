@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Models\BalldontliesTeams;
+use App\Models\BalldontlieTeam;
 
 class BalldontlieTeamTest extends TestCase
 {
@@ -16,7 +16,7 @@ class BalldontlieTeamTest extends TestCase
 
      public function testCanWithAuthorizationStoreTeam(): void
      {
-        $teamData = BalldontliesTeams::factory()->raw();
+        $teamData = BalldontlieTeam::factory()->raw();
 
         $header = $this->makeAuthAdmin();
 
@@ -28,13 +28,12 @@ class BalldontlieTeamTest extends TestCase
 
      public function testWithoutAuthorizationCannotStoreTeam(): void
      {
-         $teamData = BalldontliesTeams::factory()->raw();
+         $teamData = BalldontlieTeam::factory()->raw();
          $header = $this->makeAuthAdmin(false);
 
          $response = $this->postJson('/api/balldontlies/teams', $teamData, $header);
 
-         $response
-            ->assertUnauthorized();
+         $response->assertUnauthorized();
 
      }
 
@@ -46,26 +45,45 @@ class BalldontlieTeamTest extends TestCase
         $data = json_decode($response->getContent());
 
         $response->assertOK();
+        $response->assertJsonStructure([
+            'id',
+            'conference',
+            'division',
+            'city',
+            'name',
+            'full_name',
+            'abbreviation'
+        ]);
 
      }
 
      public function testCanEditTeam(): void
      {
         $header = $this->makeAuthAdmin();
-        $team = BalldontliesTeams::factory()->create();
+        $team = BalldontlieTeam::factory()->create();
 
         $response = $this->getJson('/api/balldontlies/teams/' . $team['id'], $header);
-        $data = json_decode($response->getContent());
 
-        $response->assertOk()
-            ->assertJsonCount(1);
+        $response->assertOk();
+        $response->assertJsonCount(1);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'conference',
+                'division',
+                'city',
+                'name',
+                'full_name',
+                'abbreviation'
+            ]
+        ]);
 
      }
 
      public function testCanDeleteTeam(): void
      {
         $header = $this->makeAuthAdmin();
-        $team = BalldontliesTeams::factory()->create();
+        $team = BalldontlieTeam::factory()->create();
 
         $response = $this->deleteJson('/api/balldontlies/teams/delete/' . $team['id'], [], $header);
 
@@ -76,7 +94,7 @@ class BalldontlieTeamTest extends TestCase
      public function testCannotDeleteTeam(): void
      {
         $header = $this->makeAuthUser();
-        $team = BalldontliesTeams::factory()->create();
+        $team = BalldontlieTeam::factory()->create();
         $response = $this->deleteJson('/api/balldontlies/teams/delete/' . $team['id'], [], $header);
 
         $response->assertStatus(403);

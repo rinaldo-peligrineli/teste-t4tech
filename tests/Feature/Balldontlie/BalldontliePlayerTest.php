@@ -55,8 +55,18 @@ class BalldontliePlayerTest extends TestCase
 
         $response = $this->getJson('/api/balldontlies/players/' . $player['id'] , $header);
 
-        $response->assertOk()
-            ->assertJsonCount(1);
+        $response->assertOk();
+        $response->assertJsonCount(1);
+
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'name',
+                'email',
+                'created_at',
+                'updated_at'
+            ]
+        ]);
 
      }
 

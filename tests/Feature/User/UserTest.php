@@ -52,7 +52,6 @@ class UserTest extends TestCase
 
         $header = $this->makeAuthAdmin();
         $response = $this->getJson('/api/users', $header);
-        $data = json_decode($response->getContent());
 
         $response->assertOK();
 
@@ -64,10 +63,18 @@ class UserTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->getJson('/api/users/' . $user['id'], $header);
-        $data = json_decode($response->getContent());
 
-        $response->assertOk()
-            ->assertJsonCount(1);
+        $response->assertOk();
+        $response->assertJsonCount(1);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'name',
+                'email',
+                'created_at',
+                'updated_at'
+            ]
+        ]);
 
      }
 
@@ -86,10 +93,9 @@ class UserTest extends TestCase
      {
         $header = $this->makeAuthUser();
         $user = User::factory()->create();
-         $response = $this->deleteJson('/api/users/delete/' . $user['id'], [], $header);
-         $data = json_decode($response->getContent());
+        $response = $this->deleteJson('/api/users/delete/' . $user['id'], [], $header);
 
-         $response->assertStatus(403);
+        $response->assertStatus(403);
 
 
      }
