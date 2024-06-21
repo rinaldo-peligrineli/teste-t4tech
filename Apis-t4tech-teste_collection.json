@@ -429,7 +429,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"conference\" : \"East\",\n    \"division\" : \"Central\",\n    \"city\" : \"Cbicago\",\n    \"name\" : \"Api Include\",  \n    \"full_name\" : \"APi Included by Postman\",  \n    \"abbreviation\" : \"TST\"\n}",
+									"raw": "{\n    \"id\" : \"154\",\n    \"conference\" : \"East\",\n    \"division\" : \"Central\",\n    \"city\" : \"Cbicago\",\n    \"name\" : \"Api Include\",  \n    \"full_name\" : \"APi Included by Postman\",  \n    \"abbreviation\" : \"TS3\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -437,7 +437,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8989/api/balldontlies/teams/10",
+									"raw": "http://localhost:8989/api/balldontlies/teams/154",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -447,7 +447,7 @@
 										"api",
 										"balldontlies",
 										"teams",
-										"10"
+										"154"
 									]
 								}
 							},

@@ -10,23 +10,23 @@ use App\Http\Resources\User\UserResource;
 use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Services\UserRoleAndPermissionService;
+
 class UserController extends Controller
 {
-
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
         private readonly UserRoleAndPermissionService $userRoleAndPermissionService
-    ) {}
+    ) {
+    }
 
-    public function index(): JsonResponse {
+    public function index(): JsonResponse
+    {
         try {
-
             $users = UserResource::collection($this->userRepository->getAllUsers());
             return response()->json([
                 'data' => $users,
             ], JsonResponse::HTTP_OK);
-
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'data' => [],
                 'errorMessage' => $e->getMessage(),
@@ -35,14 +35,14 @@ class UserController extends Controller
         }
     }
 
-    public function show($id): JsonResponse {
+    public function show($id): JsonResponse
+    {
         try {
             $users = new UserResource($this->userRepository->getUserById($id));
             return response()->json([
                 'data' => $users,
             ], JsonResponse::HTTP_OK);
-
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'data' => [],
                 'errorMessage' => $e->getMessage(),
@@ -51,7 +51,8 @@ class UserController extends Controller
         }
     }
 
-    public function store(UserStoreRequest $request): JsonResponse {
+    public function store(UserStoreRequest $request): JsonResponse
+    {
         try {
             $userAuth = $this->userRepository->getUserById(auth()->user()->id);
 
@@ -59,12 +60,12 @@ class UserController extends Controller
 
             $message = '';
 
-            if(($request->has('is_admin') && $request->is_admin === true) && $userAuth->hasRole('admin') )   {
+            if (($request->has('is_admin') && $request->is_admin === true) && $userAuth->hasRole('admin')) {
                 $this->userRoleAndPermissionService->saveUserWhithRoleAdmin($user, false);
                 $message = 'Usuario com Perfil de Admin Criado com sucesso';
             }
 
-            if((!$request->has('is_admin') || $request->is_admin === false) || $userAuth->hasRole('user')) {
+            if ((!$request->has('is_admin') || $request->is_admin === false) || $userAuth->hasRole('user')) {
                 $this->userRoleAndPermissionService->saveUserWhithRoleUser($user, false);
                 $message = "Usuario com Perfil de User Criado com sucesso";
             }
@@ -73,8 +74,7 @@ class UserController extends Controller
                 'message' => $message,
                 'data' => $user,
             ], JsonResponse::HTTP_CREATED);
-
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'data' => [],
                 'errorMessage' => $e->getMessage(),
@@ -83,16 +83,17 @@ class UserController extends Controller
         }
     }
 
-    public function search(Request $request): JsonResponse {
+    public function search(Request $request): JsonResponse
+    {
         try {
             $column = '';
             $value = '';
-            if($request->has('name')) {
+            if ($request->has('name')) {
                 $column = 'name';
                 $value = $request->name;
             }
 
-            if($request->has('email')) {
+            if ($request->has('email')) {
                 $column = 'email';
                 $value = $request->email;
             }
@@ -101,8 +102,7 @@ class UserController extends Controller
             return response()->json([
                 'data' => $users,
             ], JsonResponse::HTTP_OK);
-
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'data' => [],
                 'errorMessage' => $e->getMessage(),
@@ -112,7 +112,8 @@ class UserController extends Controller
     }
 
 
-    public function update($id, UserUpdateRequest $request): JsonResponse {
+    public function update($id, UserUpdateRequest $request): JsonResponse
+    {
         try {
             $userAuth = $this->userRepository->getUserById(auth()->user()->id);
             $user = $this->userRepository->getUserById($id);
@@ -122,12 +123,12 @@ class UserController extends Controller
 
             $this->userRoleAndPermissionService->removeRolesAndPermissionsFromUser($id);
 
-            if(($request->has('is_admin') && $request->is_admin === true) && $userAuth->hasRole('admin') )   {
+            if (($request->has('is_admin') && $request->is_admin === true) && $userAuth->hasRole('admin')) {
                 $this->userRoleAndPermissionService->saveUserWhithRoleAdmin($user, true);
                 $message = 'Usuario com Perfil de Admin salvo com sucesso';
             }
 
-            if((!$request->has('is_admin') || $request->is_admin === false) || $userAuth->hasRole('user')) {
+            if ((!$request->has('is_admin') || $request->is_admin === false) || $userAuth->hasRole('user')) {
                 $this->userRoleAndPermissionService->saveUserWhithRoleUser($user, true);
                 $message = "Usuario com Perfil de User salvo com sucesso";
             }
@@ -136,8 +137,7 @@ class UserController extends Controller
                 'message' => $message,
                 'data' => $user,
             ], JsonResponse::HTTP_OK);
-
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'data' => [],
                 'errorMessage' => $e->getMessage(),
@@ -146,9 +146,9 @@ class UserController extends Controller
         }
     }
 
-    public function delete($id): JsonResponse {
+    public function delete($id): JsonResponse
+    {
         try {
-
             $user = $this->userRepository->getUserById(auth()->user()->id);
 
             $this->userRepository->deleteUser($id);
@@ -156,8 +156,7 @@ class UserController extends Controller
             return response()->json([
                 'message' => 'Usuario excluido com sucesso'
             ], JsonResponse::HTTP_OK);
-
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'data' => [],
                 'errorMessage' => $e->getMessage(),

@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use App\Models\BalldontlieTeam;
 use App\Interfaces\Balldontlie\BalldontliePlayerRepositoryInterface;
+
 class GetBalldontliePlayer extends Command
 {
     /**
@@ -23,10 +24,12 @@ class GetBalldontliePlayer extends Command
     protected $description = 'Get Balldontlie Players';
 
 
-    public function __construct(private readonly BalldontliePlayerRepositoryInterface $balldontliePlayerRepositoryInterface)
-    {
+    public function __construct(
+        private readonly BalldontliePlayerRepositoryInterface $balldontliePlayerRepositoryInterface
+    ) {
         parent::__construct();
     }
+
     /**
      * Execute the console command.
      */
@@ -44,14 +47,14 @@ class GetBalldontliePlayer extends Command
         do {
             $response = Http::withHeaders([
                 'Authorization' => $apiKey,
-            ])->get(sprintf('%s%s', $url, '/players?cursor='. $next_cursor.'&per_page=100'));
+            ])->get(sprintf('%s%s', $url, '/players?cursor=' . $next_cursor . '&per_page=100'));
 
             $players = json_decode($response->body());
 
-            foreach($players->data as $data) {
+            foreach ($players->data as $data) {
                 $arrPlayer['balldontlie_player_origin_id'] = $data->id;
                 $arrPlayer['first_name'] = $data->first_name;
-                $arrPlayer['last_name']= $data->last_name;
+                $arrPlayer['last_name'] = $data->last_name;
                 $arrPlayer['position'] = $data->position;
                 $arrPlayer['height'] = $data->height;
                 $arrPlayer['weigth'] = $data->weight;
@@ -65,17 +68,15 @@ class GetBalldontliePlayer extends Command
 
                 $this->balldontliePlayerRepositoryInterface->createPlayer($arrPlayer);
                 $count++;
-
             }
 
-            if(!property_exists($players->meta, "next_cursor")) {
+            if (!property_exists($players->meta, "next_cursor")) {
                 break;
             }
 
             $next_cursor = $players->meta->next_cursor;
 
             sleep(2);
-
         } while (true);
 
 

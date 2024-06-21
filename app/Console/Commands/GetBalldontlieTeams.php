@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use App\Interfaces\Balldontlie\BalldontlieTeamRepositoryInterface;
+
 class GetBalldontlieTeams extends Command
 {
     /**
@@ -39,7 +40,7 @@ class GetBalldontlieTeams extends Command
 
         $teams = json_decode($response->body());
 
-        foreach($teams->data as $team) {
+        foreach ($teams->data as $team) {
             $arrTeam["balldontlie_team_id"] = $team->id;
             $arrTeam["conference"] = $team->conference;
             $arrTeam["division"] = $team->division;
@@ -49,7 +50,6 @@ class GetBalldontlieTeams extends Command
             $arrTeam["abbreviation"] = $team->abbreviation;
 
             $this->balldontlieTeamRepositoryInterface->createTeam($arrTeam);
-
         }
 
         $this->info('Registros inseridos');

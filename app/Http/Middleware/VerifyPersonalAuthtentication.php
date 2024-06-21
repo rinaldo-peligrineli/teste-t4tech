@@ -9,7 +9,6 @@ use App\Interfaces\PersonalUserTokenRepositoryInterface;
 
 class VerifyPersonalAuthtentication
 {
-
     protected $personalUserTokenRepositoryInterface;
 
     public function __construct(PersonalUserTokenRepositoryInterface $personalUserTokenRepositoryInterface)
@@ -28,7 +27,7 @@ class VerifyPersonalAuthtentication
 
         $personalUserToken = $this->personalUserTokenRepositoryInterface->getTokenByKey($token);
 
-        if(!$personalUserToken) {
+        if (!$personalUserToken) {
             abort(401);
         }
 

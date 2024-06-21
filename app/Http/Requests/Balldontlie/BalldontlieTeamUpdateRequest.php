@@ -25,13 +25,14 @@ class BalldontlieTeamUpdateRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
             'conference' => 'required',
             'division' => 'required',
             'city' => 'required',
             'name' => 'required',
             'full_name' => 'required',
-            'abbreviation' => 'required|unique:balldontlie_team,abbreviation'
+            'abbreviation' => 'required|unique:balldontlie_team,abbreviation,' . $this->id . ',id'
 
         ];
     }
