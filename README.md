@@ -52,18 +52,20 @@ php artisan db:seed
 
 Importar Balldontlie Team 
 ```sh
-php artisan balldontlie-teams:get
+php artisan balldontlie-teams
 ```
 
 Importar Balldontlie Player 
 ```sh
-php artisan balldontlie-players:get
+php artisan balldontlie-players
 ```
 
 Json para Postman
 ```sh
 Importar o arquivo Apis-t4tech-teste_collection.json para o postman
+```
 
 X-Authorization
 ```sh
 9dc44621-e11a-437e-a685-ef3d6089ced9
+```
