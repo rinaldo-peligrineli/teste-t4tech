@@ -29,8 +29,8 @@ docker exec -it {nome-da-pasta}-app-1 bash
 
 Instalar as dependências do projeto
 ```sh
-(caso tenha problema com permissão na pasta executar 
-sudo chmod 777 -R ./t4tech-validation-teste/)
+(Para linux caso tenha problema com permissão na pasta executar 
+sudo chmod 777 -R {nome da pasta onde o projeto foi baixao})
 
 composer install
 ```
